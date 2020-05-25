@@ -1,23 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-function App() {
+function App({label}) {
+
+  const [count, setCount] = useState(0);
+
+  //arrow funkcija
+  const addOne = () => {
+    const added = count + 1;
+    setCount(added);
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+        <div>{
+           label
+        }</div>
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          {
+            count
+          }
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <button onClick={addOne}>PLUS</button>
       </header>
     </div>
   );
