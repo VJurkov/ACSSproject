@@ -1,32 +1,68 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import { makeStyles } from '@material-ui/core/styles';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+import HomeIcon from '@material-ui/icons/Home';
 import './App.css';
 
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
+  },
+  title: {
+    flexGrow: 1,
+  },
+}));
+
 function App({label}) {
-
-  const [count, setCount] = useState(0);
-
-  //arrow funkcija
-  const addOne = () => {
-    const added = count + 1;
-    setCount(added);
-  }
-
+  const classes = useStyles();
   return (
-    <div className="App">
-      <header className="App-header">
-        <div>{
-           label
-        }</div>
-        <p>
-          {
-            count
-          }
-        </p>
-        <button onClick={addOne}>PLUS</button>
-      </header>
-    </div>
-  );
+    
+    <Router>
+      <div>
+      <AppBar position="static">
+      <Toolbar>
+        <IconButton component={Link} className={classes.menuButton} to="/" edge="start" color="inherit" aria-label="menu">
+          <HomeIcon />
+        </IconButton>
+        <Typography variant="h6" className={classes.title}>
+          BCKOFF Workshop
+        </Typography>
+        <Button component={Link} to="/login" color="inherit">Login</Button>
+        <Button component={Link} to="/register" color="inherit">Register</Button>
+      </Toolbar>
+    </AppBar>
+        <Switch>
+        <Route path="/login">
+            <div>login page</div>
+          </Route>
+          <Route path="/register">
+            <div>register page</div>
+          </Route>
+          <Route path="/">
+            <div>home page</div>
+          </Route>
+        </Switch>
+      </div>
+    </Router>
+  )
+
+
+  
 }
 
 export default App;
