@@ -14,6 +14,8 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
 import './App.css';
+import Home from './modules/home/Home';
+import Register from './modules/register/Register';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +42,7 @@ function App({label}) {
           <HomeIcon />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
-          BCKOFF Workshop
+          BO Workshop
         </Typography>
         <Button component={Link} to="/login" color="inherit">Login</Button>
         <Button component={Link} to="/register" color="inherit">Register</Button>
@@ -51,10 +53,10 @@ function App({label}) {
             <div>login page</div>
           </Route>
           <Route path="/register">
-            <div>register page</div>
+            <Register/>
           </Route>
           <Route path="/">
-            <div>home page</div>
+           <Home/>
           </Route>
         </Switch>
       </div>
