@@ -15,7 +15,10 @@ import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
 import './App.css';
 import Home from './modules/home/Home';
-import Register from './modules/register/Register';
+import Register from './modules/authentication/Register';
+import { useSelector } from 'react-redux';
+import { currentUserSelector } from './modules/authentication/redux/selectors';
+import { Avatar } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 function App({label}) {
   const classes = useStyles();
+  const currentUser = useSelector(currentUserSelector);
   return (
     
     <Router>
@@ -44,6 +48,7 @@ function App({label}) {
         <Typography variant="h6" className={classes.title}>
           BO Workshop
         </Typography>
+        <Avatar alt={currentUser.name} src={currentUser.img || {}}/>
         <Button component={Link} to="/login" color="inherit">Login</Button>
         <Button component={Link} to="/register" color="inherit">Register</Button>
       </Toolbar>
