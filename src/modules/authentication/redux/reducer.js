@@ -1,10 +1,13 @@
-import {REGISTER_DONE, REGISTER_LOADING, REGISTER_ERROR} from "./actions";
+import {REGISTER_DONE, REGISTER_LOADING, REGISTER_ERROR,LOGIN_DONE, LOGIN_ERROR, LOGIN_LOADING} from "./actions";
 
 
 const initialState = {
-    isLoading: false,
+    isRegisterLoading: false,
+    isLoginLoading: false,
     currentUser: {},
-    registerError: null
+    registerError: null,
+    loginError: null
+    
 }
 
 export function authenticationReducer(state = initialState, action) {
@@ -12,21 +15,39 @@ export function authenticationReducer(state = initialState, action) {
       case REGISTER_LOADING:
           return {
               ...state,
-              isLoading: true
+              isRegisterLoading: true
           }
           case REGISTER_DONE:
           return {
               ...state,
-              isLoading: false,
+              isRegisterLoading: false,
               currentUser: action.payload
           }
-          case REGISTER_LOADING:
+          case REGISTER_ERROR:
           return {
               ...state,
-              isLoading: false,
+              isRegisterLoading: false,
               registerError: action.payload
           }
         
+          case LOGIN_LOADING:
+          return {
+              ...state,
+              isLoginLoading: true
+          }
+          case LOGIN_DONE:
+          return {
+              ...state,
+              isLoginLoading: false,
+              currentUser: action.payload
+          }
+          case LOGIN_ERROR:
+          return {
+              ...state,
+              isLoginLoading: false,
+              loginError: action.payload
+          }
+
       default:
         return state
     }

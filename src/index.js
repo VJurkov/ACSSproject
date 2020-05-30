@@ -23,6 +23,9 @@ const theme = createMuiTheme({
       contrastText: '#e57373',
     }
   },
+  status: {
+    warning: '#f44336'
+  }
 });
 
 ReactDOM.render(

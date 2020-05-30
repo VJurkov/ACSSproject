@@ -19,6 +19,8 @@ import Register from './modules/authentication/Register';
 import { useSelector } from 'react-redux';
 import { currentUserSelector } from './modules/authentication/redux/selectors';
 import { Avatar } from '@material-ui/core';
+import Login from './modules/authentication/Login';
+import Customers from './modules/customers/Customers';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
   menuButton: {
     marginRight: theme.spacing(2),
   },
-  title: {
+  spacer: {
     flexGrow: 1,
   },
 }));
@@ -45,19 +47,25 @@ function App({label}) {
         <IconButton component={Link} className={classes.menuButton} to="/" edge="start" color="inherit" aria-label="menu">
           <HomeIcon />
         </IconButton>
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant="h6">
           BO Workshop
         </Typography>
+        <Button component={Link} to="/customers" color="inherit">Customers</Button>
+        <div className={classes.spacer}/>
         <Avatar alt={currentUser.name} src={currentUser.img || {}}/>
         <Button component={Link} to="/login" color="inherit">Login</Button>
         <Button component={Link} to="/register" color="inherit">Register</Button>
       </Toolbar>
     </AppBar>
         <Switch>
-        <Route path="/login">
-            <div>login page</div>
+        <Route  path="/customers">
+            <Customers/>
           </Route>
-          <Route path="/register">
+        <Route  path="/login">
+            <Login/>
+          </Route>
+         
+          <Route  path="/register">
             <Register/>
           </Route>
           <Route path="/">
