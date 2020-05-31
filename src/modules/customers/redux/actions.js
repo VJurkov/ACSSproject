@@ -4,6 +4,8 @@ export const CUSTOMERS_LOADING = "CUSTOMERS_LOADING";
 export const CUSTOMERS_DONE = "CUSTOMERS_DONE";
 export const CUSTOMERS_ERROR = "CUSTOMERS_ERROR";
 
+export const SET_SEARCH_TERM = "SET_SEARCH_TERM";
+
 
 export function customersLoadingAction() {
     return {
@@ -20,6 +22,13 @@ export function customersErrorAction(error) {
     return {
         type: CUSTOMERS_ERROR,
         payload: error
+    }
+}
+
+export function setSearchTermAction(setSearchTerm) {
+    return {
+        type: SET_SEARCH_TERM,
+        payload: setSearchTerm
     }
 }
 

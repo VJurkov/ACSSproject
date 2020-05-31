@@ -22,9 +22,6 @@ const theme = createMuiTheme({
       // dark: will be calculated from palette.secondary.main,
       contrastText: '#e57373',
     }
-  },
-  status: {
-    warning: '#f44336'
   }
 });
 
