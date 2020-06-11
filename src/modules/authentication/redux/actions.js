@@ -1,4 +1,3 @@
-
 //akcije koje idu prema redux-u
 
 import Axios from "axios";
@@ -12,76 +11,85 @@ export const LOGIN_DONE = "LOGIN_DONE";
 export const LOGIN_ERROR = "LOGIN_ERROR";
 
 export function registerLoadingAction() {
-    return {
-        type: REGISTER_LOADING
-    }
+  return {
+    type: REGISTER_LOADING,
+  };
 }
 export function registerDoneAction(data) {
-    return {
-        type: REGISTER_DONE,
-        payload: data
-    }
+  return {
+    type: REGISTER_DONE,
+    payload: data,
+  };
 }
 export function registerErrorAction(error) {
-    return {
-        type: REGISTER_ERROR,
-        payload: error
-    }
+  return {
+    type: REGISTER_ERROR,
+    payload: error,
+  };
 }
 
 export function registerUser(data) {
-    return async (dispatch)=> {
-        try {
-            dispatch(registerLoadingAction());
-        
-            //axios api poziv
-            const user = await Axios.post("http://www.fulek.com/nks/api/aw/registeruser", data)
+  return async (dispatch) => {
+    try {
+      dispatch(registerLoadingAction());
 
-            dispatch(registerDoneAction(user.data));
-        } catch (error) {
-            dispatch(registerErrorAction(error.message));
-        }
+      //axios api poziv
+      const user = await Axios.post(
+        "http://www.fulek.com/nks/api/aw/registeruser",
+        data
+      );
 
+      localStorage.setItem("TOKEN", user.data.token);
+      dispatch(registerDoneAction(user.data));
+    } catch (error) {
+      dispatch(registerErrorAction(error.message));
     }
+  };
 }
 export function loginLoadingAction() {
-    return {
-        type: LOGIN_LOADING
-    }
+  return {
+    type: LOGIN_LOADING,
+  };
 }
 export function loginDoneAction(data) {
-    return {
-        type: LOGIN_DONE,
-        payload: data
-    }
+  return {
+    type: LOGIN_DONE,
+    payload: data,
+  };
 }
 export function loginErrorAction(error) {
-    return {
-        type: LOGIN_ERROR,
-        payload: error
-    }
+  return {
+    type: LOGIN_ERROR,
+    payload: error,
+  };
 }
 
 export function loginUser(data) {
-    return async (dispatch)=> {
-        try {
-            dispatch(loginLoadingAction());
-        
-            //axios api poziv
-            const user = await Axios.post("http://www.fulek.com/nks/api/aw/login", data)
+  return async (dispatch) => {
+    try {
+      dispatch(loginLoadingAction());
 
-            //hvatamo podatke ulogiranog usera
-            const userData = await Axios.post("http://www.fulek.com/nks/api/aw/getUser", {username: user.data.username})
+      //axios api poziv
+      const user = await Axios.post(
+        "http://www.fulek.com/nks/api/aw/login",
+        data
+      );
 
-            const loggedinUser = {
-                ...userData.data,
-                token: user.data.token
-            }
+      //hvatamo podatke ulogiranog usera
+      const userData = await Axios.post(
+        "http://www.fulek.com/nks/api/aw/getUser",
+        { username: user.data.username }
+      );
 
-            dispatch(loginDoneAction(loggedinUser));
-        } catch (error) {
-            dispatch(loginErrorAction(error.message));
-        }
+      const loggedinUser = {
+        ...userData.data,
+        token: user.data.token,
+      };
 
+      localStorage.setItem("TOKEN", user.data.token);
+      dispatch(loginDoneAction(loggedinUser));
+    } catch (error) {
+      dispatch(loginErrorAction(error.message));
     }
+  };
 }
