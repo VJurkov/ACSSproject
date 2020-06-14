@@ -1,4 +1,9 @@
-import { UPDATE_ADD_ITEM } from "./actions";
+import {
+  UPDATE_ADD_ITEM,
+  ADDITEM_DONE,
+  ADDITEM_LOADING,
+  ADDITEM_ERROR,
+} from "./actions";
 
 const initialState = {
   form: {
@@ -6,6 +11,8 @@ const initialState = {
     subcategories: [],
     products: [],
   },
+  isLoading: false,
+  error: null,
 };
 
 export function addItemReducer(state = initialState, action) {
@@ -14,6 +21,22 @@ export function addItemReducer(state = initialState, action) {
       return {
         ...state,
         form: action.payload,
+      };
+    case ADDITEM_LOADING:
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case ADDITEM_DONE:
+      return {
+        ...state,
+        isLoading: false,
+      };
+    case ADDITEM_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload,
       };
 
     default:

@@ -5,3 +5,7 @@ export const billDetailsSelector = (state) => {
 export const billItemFormSelector = (state) => {
   return state.addItem.form;
 };
+
+export const addItemLoadingSelector = (state) => {
+  return state.addItem.isLoading;
+};

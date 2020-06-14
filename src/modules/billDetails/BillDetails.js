@@ -1,10 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getBillsDetails } from "./redux/actions";
+import { getBillsDetails, deleteItem } from "./redux/actions";
 import PaginationTable from "../../shared/PaginationTable";
-import { TableRow, TableCell, Slide, Button, Dialog } from "@material-ui/core";
+import {
+  TableRow,
+  TableCell,
+  Slide,
+  Button,
+  Dialog,
+  Fab,
+} from "@material-ui/core";
 import { billDetailsSelector } from "./redux/selectors";
 import AddBillItem from "./AddBillItem";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
+import Counter from "../../shared/Counter";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -13,8 +22,11 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function BillDetails({ match }) {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
+  const [deletingItemId, setDeletingItemId] = useState(0);
   const billDetails = useSelector(billDetailsSelector);
+  const interval = useRef(null);
 
+  const { id } = match.params;
   const handleClose = () => {
     setOpen(false);
   };
@@ -37,7 +49,7 @@ function BillDetails({ match }) {
         onClose={handleClose}
         TransitionComponent={Transition}
       >
-        <AddBillItem handleClose={handleClose} />
+        <AddBillItem billId={id} handleClose={handleClose} />
       </Dialog>
       <PaginationTable
         data={billDetails}
@@ -52,6 +64,32 @@ function BillDetails({ match }) {
               <TableCell align="right">{item.Quantity}</TableCell>
               <TableCell align="right">{item.PricePerPiece}</TableCell>
               <TableCell align="right">{item.TotalPrice}</TableCell>
+              <TableCell align="right">
+                {item.Id === deletingItemId && (
+                  <Counter
+                    onStop={() => {
+                      clearInterval(interval.current);
+                      setDeletingItemId(0);
+                    }}
+                    seconds={5}
+                  />
+                )}
+                {item.Id !== deletingItemId && (
+                  <Button
+                    color="transparent"
+                    onClick={() => {
+                      clearInterval(interval.current);
+                      interval.current = setTimeout(() => {
+                        dispatch(deleteItem(item.Id, id));
+                      }, 5000);
+                      setDeletingItemId(item.Id);
+                    }}
+                    size="small"
+                  >
+                    <DeleteOutlinedIcon />
+                  </Button>
+                )}
+              </TableCell>
             </TableRow>
           );
         }}
@@ -63,6 +101,7 @@ function BillDetails({ match }) {
               <TableCell align="right">Quantity</TableCell>
               <TableCell align="right">Price per piece</TableCell>
               <TableCell align="right">Total Cost</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           );
         }}

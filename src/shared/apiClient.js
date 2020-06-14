@@ -1,10 +1,23 @@
 import Axios from "axios";
 
-export function callEndPoint(type, url, data) {
+export async function callEndPoint(type, url, data) {
   const token = localStorage.getItem("TOKEN");
 
   switch (type) {
+    case "POST": {
+      return Axios.post(url, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+    }
     default:
-      Axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+      return Axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
   }
 }
