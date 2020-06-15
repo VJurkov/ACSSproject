@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import logo from "./logo.svg";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Switch, Route, Link } from "react-router-dom";
+import { ConnectedRouter as Router } from "connected-react-router";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,6 +19,8 @@ import Login from "./modules/authentication/Login";
 import Customers from "./modules/customers/Customers";
 import Bills from "./modules/bills/Bills";
 import BillDetails from "./modules/billDetails/BillDetails";
+import UserStatus from "./shared/UserStatus";
+import { history } from "./modules/redux/createStore";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,7 +38,7 @@ function App({ label }) {
   const classes = useStyles();
   const currentUser = useSelector(currentUserSelector);
   return (
-    <Router>
+    <Router history={history}>
       <div>
         <AppBar position="static">
           <Toolbar>
@@ -54,13 +57,7 @@ function App({ label }) {
               Customers
             </Button>
             <div className={classes.spacer} />
-            <Avatar alt={currentUser.name} src={currentUser.img || {}} />
-            <Button component={Link} to="/login" color="inherit">
-              Login
-            </Button>
-            <Button component={Link} to="/register" color="inherit">
-              Register
-            </Button>
+            <UserStatus />
           </Toolbar>
         </AppBar>
         <Switch>
@@ -72,6 +69,9 @@ function App({ label }) {
           </Route>
 
           <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/edit">
             <Register />
           </Route>
           <Route component={Bills} path="/bills/:id" />

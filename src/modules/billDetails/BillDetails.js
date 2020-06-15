@@ -14,6 +14,8 @@ import { billDetailsSelector } from "./redux/selectors";
 import AddBillItem from "./AddBillItem";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import Counter from "../../shared/Counter";
+import { isAuthorized } from "../../shared/authorized";
+import { currentUserSelector } from "../authentication/redux/selectors";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -21,10 +23,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function BillDetails({ match }) {
   const dispatch = useDispatch();
+  const currentUser = useSelector(currentUserSelector);
   const [open, setOpen] = useState(false);
   const [deletingItemId, setDeletingItemId] = useState(0);
   const billDetails = useSelector(billDetailsSelector);
   const interval = useRef(null);
+
+  const authorized = isAuthorized(currentUser);
 
   const { id } = match.params;
   const handleClose = () => {
@@ -36,13 +41,15 @@ function BillDetails({ match }) {
   }, [match]);
   return (
     <div>
-      <Button
-        onClick={() => {
-          setOpen(true);
-        }}
-      >
-        Add Item
-      </Button>
+      {authorized && (
+        <Button
+          onClick={() => {
+            setOpen(true);
+          }}
+        >
+          Add Item
+        </Button>
+      )}
       <Dialog
         fullScreen
         open={open}
@@ -74,7 +81,7 @@ function BillDetails({ match }) {
                     seconds={5}
                   />
                 )}
-                {item.Id !== deletingItemId && (
+                {item.Id !== deletingItemId && authorized && (
                   <Button
                     color="transparent"
                     onClick={() => {

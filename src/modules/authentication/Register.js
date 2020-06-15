@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import {
   FormControl,
   Input,
@@ -14,7 +14,8 @@ import {
 import AddIcon from "@material-ui/icons/Add";
 import { Formik } from "formik";
 import SendIcon from "@material-ui/icons/Send";
-import { registerUser } from "./redux/actions";
+import { registerUser, editUser } from "./redux/actions";
+import { currentUserSelector } from "./redux/selectors";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Register(props) {
   const classes = useStyles();
+  const currentUser = useSelector(currentUserSelector);
   const dispatch = useDispatch();
   const handleFileChange = (event, setFieldValue) => {
     const file = event.currentTarget.files[0];
@@ -56,7 +58,12 @@ function Register(props) {
 
   return (
     <Formik
-      initialValues={{ name: "", username: "", password: "", img: null }}
+      initialValues={{
+        name: currentUser.name || "",
+        username: currentUser.username || "",
+        password: currentUser.password || "",
+        img: currentUser.img || null,
+      }}
       validate={(values) => {
         const errors = {};
         if (!values.username) {
@@ -75,7 +82,11 @@ function Register(props) {
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
-        dispatch(registerUser(values));
+        if (currentUser.username === undefined) {
+          dispatch(registerUser(values));
+        } else {
+          dispatch(editUser({ id: currentUser.id, ...values }));
+        }
       }}
     >
       {({

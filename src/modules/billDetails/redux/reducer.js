@@ -16,6 +16,7 @@ export function billDetailsReducer(state = initialState, action) {
     case BILLDETAILS_LOADING:
       return {
         ...state,
+        items: [],
         isLoading: true,
       };
     case BILLDETAILS_DONE:
@@ -27,6 +28,7 @@ export function billDetailsReducer(state = initialState, action) {
     case BILLDETAILS_ERROR:
       return {
         ...state,
+        items: [],
         isLoading: false,
         error: action.payload,
       };
