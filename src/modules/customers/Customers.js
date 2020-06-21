@@ -61,6 +61,7 @@ function Customers() {
           fullWidth
         />
         <PaginationTable
+          showBack={false}
           data={customers}
           itemsPerPage={15}
           renderItem={(item) => {

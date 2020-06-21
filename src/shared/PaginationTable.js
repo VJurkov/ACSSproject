@@ -23,7 +23,13 @@ const useStyles = makeStyles({
   },
 });
 
-function PaginationTable({ renderHeader, data, renderItem, itemsPerPage }) {
+function PaginationTable({
+  renderHeader,
+  data,
+  renderItem,
+  itemsPerPage,
+  showBack = true,
+}) {
   const history = useHistory();
   const [pages, setPages] = useState(chunkArray(data, itemsPerPage));
   const [currentPage, setCurrentPage] = useState(0);
@@ -52,25 +58,40 @@ function PaginationTable({ renderHeader, data, renderItem, itemsPerPage }) {
     return null;
   }
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
-        <TableHead>{renderHeader()}</TableHead>
-        <TableBody>
-          {pages[currentPage].map((item) => renderItem(item))}
-        </TableBody>
-      </Table>
+    <div>
+      <TableContainer component={Paper}>
+        <Table
+          className={classes.table}
+          size="small"
+          aria-label="a dense table"
+        >
+          <TableHead>{renderHeader()}</TableHead>
+          <TableBody>
+            {pages[currentPage].map((item) => renderItem(item))}
+          </TableBody>
+        </Table>
 
-      <div>
-        {
-          <Pagination
-            count={pages.length - 1}
-            onChange={(event, value) => {
-              setCurrentPage(value);
-            }}
-          />
-        }
-      </div>
-    </TableContainer>
+        <div>
+          {
+            <Pagination
+              count={pages.length - 1}
+              onChange={(event, value) => {
+                setCurrentPage(value);
+              }}
+            />
+          }
+        </div>
+      </TableContainer>
+      {showBack && (
+        <Button
+          onClick={() => {
+            history.goBack();
+          }}
+        >
+          GO back
+        </Button>
+      )}
+    </div>
   );
 }
 
