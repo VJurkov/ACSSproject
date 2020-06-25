@@ -147,8 +147,10 @@ export function editUser(data) {
         "http://www.fulek.com/nks/api/aw/editUser",
         data
       );
+
+      const token = localStorage.getItem("TOKEN");
       localStorage.setItem("USERNAME", user.data.username);
-      dispatch(registerDoneAction(user.data));
+      dispatch(registerDoneAction({ ...user.data, token }));
       dispatch(push("/"));
     } catch (error) {
       dispatch(registerErrorAction(error.message));

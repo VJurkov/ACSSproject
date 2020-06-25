@@ -82,6 +82,7 @@ function Register(props) {
         return errors;
       }}
       onSubmit={(values, { setSubmitting }) => {
+        //ako postoji korisnik onda editira ako ne onda se registrira
         if (currentUser.username === undefined) {
           dispatch(registerUser(values));
         } else {
